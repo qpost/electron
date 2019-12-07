@@ -17,4 +17,39 @@
  * along with this program. If not, see <https://gnu.org/licenses/>
  */
 
-console.log("Hello world!");
+// https://electronjs.org/docs/tutorial/first-app
+const {app, BrowserWindow} = require("electron");
+
+let window;
+
+const createWindow = () => {
+	window = new BrowserWindow({
+		width: 800,
+		height: 600,
+		webPreferences: {
+			nodeIntegration: true
+		}
+	});
+
+	window.loadFile("index.html");
+
+	window.webContents.openDevTools();
+
+	window.on("closed", () => {
+		window = null;
+	});
+};
+
+app.on("ready", createWindow);
+
+app.on("window-all-closed", () => {
+	if (process.platform !== "darwin") {
+		app.quit();
+	}
+});
+
+app.on("activate", () => {
+	if (window === null) {
+		createWindow();
+	}
+});
