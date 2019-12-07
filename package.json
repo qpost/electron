@@ -2,7 +2,7 @@
 	"name": "qpost-electron",
 	"version": "0.1.0",
 	"description": "qpost electron app",
-	"main": "index.js",
+	"main": "src/index.js",
 	"scripts": {
 		"start": "electron ."
 	},
