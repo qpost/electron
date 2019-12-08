@@ -31,7 +31,7 @@ const createWindow = () => {
 		}
 	});
 
-	window.loadFile("index.html");
+	window.loadFile("src/index.html");
 
 	window.webContents.openDevTools();
 
