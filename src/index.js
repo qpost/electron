@@ -17,39 +17,72 @@
  * along with this program. If not, see <https://gnu.org/licenses/>
  */
 
-// https://electronjs.org/docs/tutorial/first-app
-const {app, BrowserWindow} = require("electron");
+const {remote, app, BrowserWindow, Menu, webContents} = require('electron');
+const path = require('path');
+let mainWindow;
+let webviewId;
 
-let window;
-
-const createWindow = () => {
-	window = new BrowserWindow({
-		width: 800,
-		height: 600,
+app.on('ready', () => {
+	mainWindow = new BrowserWindow({
+		titleBarStyle: 'hidden-inset',
+		frame: false,
 		webPreferences: {
-			nodeIntegration: true
+			nodeIntegration: true,
+			webviewTag: true
 		}
 	});
+	mainWindow.loadURL(path.join('file://', __dirname, 'index.html'));
+	mainWindow.openDevTools({mode: 'bottom'});
 
-	window.loadFile("src/index.html");
-
-	window.webContents.openDevTools();
-
-	window.on("closed", () => {
-		window = null;
-	});
-};
-
-app.on("ready", createWindow);
-
-app.on("window-all-closed", () => {
-	if (process.platform !== "darwin") {
-		app.quit();
-	}
+	//createMenu();
 });
 
-app.on("activate", () => {
-	if (window === null) {
-		createWindow();
-	}
-});
+// get the webview's webContents
+function getWebviewWebContents() {
+	return webContents;
+}
+
+function createMenu() {
+
+	const topLevelItems = [
+		{
+			label: 'Application',
+			submenu: [
+				{
+					label: 'Quit',
+					accelerator: 'CmdOrCtrl+Q',
+					click() {
+						app.quit();
+					}
+				}
+			]
+		},
+		{
+			label: 'Edit',
+			submenu: [
+				{label: 'Undo', accelerator: 'CmdOrCtrl+Z', role: 'undo'},
+				{label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', role: 'redo'},
+				{type: 'separator'},
+				{label: 'Cut', accelerator: 'CmdOrCtrl+X', role: 'cut'},
+				{label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy'},
+				{label: 'Paste', accelerator: 'CmdOrCtrl+V', role: 'paste'},
+				{label: 'Select All', accelerator: 'CmdOrCtrl+A', role: 'selectall'}
+			]
+		},
+		{
+			label: 'Actions',
+			submenu: [
+				{
+					label: 'Mark All As Complete',
+					click() {
+						// send an IPC message to the webview for handling
+						const wc = getWebviewWebContents();
+						wc.send('markAllComplete');
+					}
+				}
+			]
+		}
+	];
+
+	Menu.setApplicationMenu(Menu.buildFromTemplate(topLevelItems));
+}
