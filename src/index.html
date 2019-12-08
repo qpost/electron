@@ -134,15 +134,17 @@
 	</div>
 </nav>
 
-<div class="loader">
-	<h1>LOADING...</h1>
-</div>
+<main>
+	<div class="loader">
+		<h1>LOADING...</h1>
+	</div>
 
-<webview
-		class="hide"
-		preload="./preload.js"
-		src="https://qpo.st"
-></webview>
+	<webview
+			class="hide"
+			preload="./preload.js"
+			src="https://qpo.st"
+	></webview>
+</main>
 
 <script>
 	const $webview = document.querySelector('webview');
