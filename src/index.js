@@ -23,13 +23,20 @@ let mainWindow;
 let webviewId;
 
 app.on('ready', () => {
+	const width = 1024;
+	const height = 768;
+
 	mainWindow = new BrowserWindow({
 		titleBarStyle: 'hidden-inset',
 		frame: false,
 		webPreferences: {
 			nodeIntegration: true,
 			webviewTag: true
-		}
+		},
+		height,
+		width,
+		minHeight: 940,
+		minWidth: 500
 	});
 	mainWindow.loadURL(path.join('file://', __dirname, 'index.html'));
 	mainWindow.openDevTools({mode: 'bottom'});
