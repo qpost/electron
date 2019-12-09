@@ -191,7 +191,7 @@
 	////////////////////////////
 
 	const {remote} = require("electron");
-	var win = remote.BrowserWindow.getFocusedWindow();
+	var win = remote.getCurrentWindow();
 
 	// var title = document.querySelector("title").innerHTML;
 	// document.querySelector("#titleshown").innerHTML = title;
