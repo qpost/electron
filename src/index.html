@@ -61,8 +61,8 @@
 		nav {
 			display: block;
 			width: 100%;
-			height: 30px;
-			background-color: #333333;
+			height: 21px;
+			background-color: #001529;
 			-webkit-app-region: drag;
 			-webkit-user-select: none;
 			position: fixed;
@@ -72,7 +72,7 @@
 		nav #titleshown {
 			width: 30%;
 			height: 100%;
-			line-height: 30px;
+			line-height: 21px;
 			color: #f7f7f7;
 			float: left;
 			padding: 0 0 0 1em;
@@ -82,8 +82,8 @@
 			float: right;
 			width: 150px;
 			height: 100%;
-			line-height: 30px;
-			background-color: #222222;
+			line-height: 21px;
+			background-color: #000B17;
 			-webkit-app-region: no-drag;
 		}
 
@@ -111,11 +111,11 @@
 		}
 
 		main {
-			padding-top: 30px;
+			padding-top: 21px;
 			overflow: auto;
-			height: calc(100vh - 30px);
+			height: calc(100vh - 21px);
 			position: absolute;
-			top: 30px;
+			top: 21px;
 			left: 0;
 			padding: 0;
 			width: 100%;
@@ -126,7 +126,10 @@
 <body>
 
 <nav>
-	<div id="titleshown"></div>
+	<div id="titleshown">
+		<!--		<img src="./qpost-white-tiny.png" alt="qpost" title="qpost" style="height: 1em; margin-top: 3px;"/>-->
+	</div>
+
 	<div id="buttons">
 		<div id="minimize"><span>&dash;</span></div>
 		<div id="maximize"><span>&square;</span></div>
@@ -183,8 +186,8 @@
 	const {remote} = require("electron");
 	var win = remote.BrowserWindow.getFocusedWindow();
 
-	var title = document.querySelector("title").innerHTML;
-	document.querySelector("#titleshown").innerHTML = title;
+	// var title = document.querySelector("title").innerHTML;
+	// document.querySelector("#titleshown").innerHTML = title;
 
 	var minimize = document.querySelector("#minimize");
 	var maximize = document.querySelector("#maximize");
