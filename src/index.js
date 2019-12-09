@@ -57,7 +57,7 @@ ipc.on("finishedWebviewInitiation", (event) => {
 // get the webview's webContents
 function getWebviewWebContents() {
 	const contents = webContents.getAllWebContents().filter(value => {
-		return value.getURL().toString().startsWith("http://localhost:8000");
+		return value.getURL().toString().startsWith("https://qpo.st");
 	});
 
 	return contents.length > 0 ? contents[0] : null;

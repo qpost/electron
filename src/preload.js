@@ -109,7 +109,7 @@ function doSubscription(token) {
 		GCM: credentials.gcm.token
 	};
 
-	fetch("http://localhost:8000/webpush/", {
+	fetch("https://qpo.st/webpush/", {
 		method: 'POST',
 		mode: 'cors',
 		credentials: 'include',
