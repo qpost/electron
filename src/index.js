@@ -39,7 +39,7 @@ app.on('ready', () => {
 		minWidth: 500
 	});
 	mainWindow.loadURL(path.join('file://', __dirname, 'index.html'));
-	mainWindow.openDevTools({mode: 'bottom'});
+	// mainWindow.openDevTools({mode: 'bottom'});
 
 	//createMenu();
 });
