@@ -40,6 +40,7 @@ app.on('ready', () => {
 	});
 	mainWindow.loadURL(path.join('file://', __dirname, 'index.html'));
 	// mainWindow.openDevTools({mode: 'bottom'});
+	mainWindow.maximize();
 
 	//createMenu();
 });
