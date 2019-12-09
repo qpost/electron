@@ -18,12 +18,15 @@
  */
 
 const {remote, app, BrowserWindow, Menu, webContents, ipcMain: ipc} = require('electron');
+const {autoUpdater} = require("electron-updater");
 const {setup: setupPushReceiver} = require('electron-push-receiver');
 const path = require('path');
 let mainWindow;
 let webviewId;
 
 app.on('ready', () => {
+	autoUpdater.checkForUpdatesAndNotify();
+
 	const width = 1024;
 	const height = 768;
 

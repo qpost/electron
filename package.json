@@ -29,9 +29,16 @@
 			"category": "public.app-category.social-networking"
 		},
 		"productName": "qpost",
-		"copyright": "Copyright © 2018-2019 Gigadrive"
+		"copyright": "Copyright © 2018-2019 Gigadrive",
+		"publish": [
+			{
+				"provider": "generic",
+				"url": "https://updates.qpo.st/electron/"
+			}
+		]
 	},
 	"dependencies": {
-		"electron-push-receiver": "^2.1.3"
+		"electron-push-receiver": "^2.1.3",
+		"electron-updater": "^4.2.0"
 	}
 }
