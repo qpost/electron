@@ -20,6 +20,12 @@
 // in preload scripts, we have access to node.js and electron APIs
 // the remote web app will not, so this is safe
 const {ipcRenderer: ipc, remote} = require('electron');
+const {
+	NOTIFICATION_SERVICE_STARTED,
+	NOTIFICATION_SERVICE_ERROR,
+	NOTIFICATION_RECEIVED: ON_NOTIFICATION_RECEIVED,
+	TOKEN_UPDATED,
+} = require("electron-push-receiver/src/constants");
 
 
 init();
@@ -45,6 +51,82 @@ function attachIPCListeners() {
 	/*ipc.on('markAllComplete', () => {
 	  window.Bridge.markAllComplete();
 	});*/
+
+	// https://github.com/MatthieuLemoine/electron-push-receiver
+	ipc.on(NOTIFICATION_SERVICE_STARTED, (_, token) => {
+		console.log("Notification service started", _, token);
+
+		doSubscription(token);
+	});
+
+	ipc.on(NOTIFICATION_SERVICE_ERROR, (_, error) => {
+		console.error("Notification service error", _, error);
+	});
+
+	ipc.on(TOKEN_UPDATED, (_, token) => {
+		console.log("Token updated", _, token);
+
+		doSubscription(token);
+	});
+
+	ipc.on(ON_NOTIFICATION_RECEIVED, (_, serverNotificationPayload) => {
+		console.log("notification received", serverNotificationPayload);
+
+		// check to see if payload contains a body string, if it doesn't consider it a silent push
+		if (typeof serverNotificationPayload.notification.body !== "undefined") {
+			// payload has a body, so show it to the user
+			console.log('display notification', serverNotificationPayload);
+			let myNotification = new Notification(serverNotificationPayload.notification.title, {
+				body: serverNotificationPayload.notification.body,
+				icon: serverNotificationPayload.notification.icon
+			});
+
+			myNotification.onclick = () => {
+				console.log('Notification clicked')
+			}
+		} else {
+			// payload has no body, so consider it silent (and just consider the data portion)
+			console.log('do something with the key/value pairs in the data', serverNotificationPayload.data)
+		}
+	});
+}
+
+function doSubscription(token) {
+	const Config = require("electron-config");
+	const config = new Config();
+	const credentials = config.get("credentials");
+
+	console.log("credentials", credentials);
+
+	const url = "https://fcm.googleapis.com/fcm/send/" + token;
+	const subscription = {
+		endpoint: url,
+		expirationTime: null,
+		keys: {
+			p256dh: credentials.keys.publicKey,
+			auth: credentials.keys.authSecret
+		},
+		GCM: credentials.gcm.token
+	};
+
+	fetch("http://localhost:8000/webpush/", {
+		method: 'POST',
+		mode: 'cors',
+		credentials: 'include',
+		cache: 'default',
+		headers: new Headers({
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		}),
+		body: JSON.stringify({
+			subscription: subscription,
+			options: {},
+		})
+	}).then(() => {
+		console.log("subscribed");
+	}).catch(reason => {
+		console.error("failed to subscribe");
+	});
 }
 
 // the todo app calls this when the todo count changes

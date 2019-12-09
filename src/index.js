@@ -17,7 +17,8 @@
  * along with this program. If not, see <https://gnu.org/licenses/>
  */
 
-const {remote, app, BrowserWindow, Menu, webContents} = require('electron');
+const {remote, app, BrowserWindow, Menu, webContents, ipcMain: ipc} = require('electron');
+const {setup: setupPushReceiver} = require('electron-push-receiver');
 const path = require('path');
 let mainWindow;
 let webviewId;
@@ -45,9 +46,18 @@ app.on('ready', () => {
 	//createMenu();
 });
 
+ipc.on("finishedWebviewInitiation", (event) => {
+	console.log("received message", event);
+	setupPushReceiver(getWebviewWebContents());
+});
+
 // get the webview's webContents
 function getWebviewWebContents() {
-	return webContents;
+	const contents = webContents.getAllWebContents().filter(value => {
+		return value.getURL().toString().startsWith("http://localhost:8000");
+	});
+
+	return contents.length > 0 ? contents[0] : null;
 }
 
 function createMenu() {

@@ -145,11 +145,13 @@
 	<webview
 			class="hide"
 			preload="./preload.js"
-			src="https://qpo.st"
+			src="http://localhost:8000"
 	></webview>
 </main>
 
 <script>
+	const {ipcRenderer} = require("electron");
+	const {START_NOTIFICATION_SERVICE} = require("electron-push-receiver/src/constants");
 	const $webview = document.querySelector('webview');
 	const $loader = document.querySelector('.loader');
 	let isInitialLoad = true;
@@ -172,6 +174,11 @@
 		// have to delay in order for the webview show/resize to settle
 		setTimeout(() => {
 			$loader.classList.add('loader-hide');
+
+			setTimeout(() => {
+				ipcRenderer.send("finishedWebviewInitiation");
+				ipcRenderer.send(START_NOTIFICATION_SERVICE, "32586002104");
+			}, 2000);
 		}, 100);
 	});
 
