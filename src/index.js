@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2018-2019 Gigadrive - All rights reserved.
+ * Copyright (C) 2018-2020 Gigadrive - All rights reserved.
  * https://gigadrivegroup.com
- * https://qpo.st
+ * https://qpostapp.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ ipc.on("finishedWebviewInitiation", (event) => {
 // get the webview's webContents
 function getWebviewWebContents() {
 	const contents = webContents.getAllWebContents().filter(value => {
-		return value.getURL().toString().startsWith("https://qpo.st");
+		return value.getURL().toString().startsWith("https://qpostapp.com");
 	});
 
 	return contents.length > 0 ? contents[0] : null;
